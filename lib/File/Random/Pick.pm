@@ -58,7 +58,7 @@ This module can return random lines from a specified file.
 
 Compared to the existing L<File::Random>, this module does not return
 duplicates. I have also submitted a ticket to incorporate this functionality
-into File::Random.
+into File::Random [1].
 
 
 =head1 FUNCTIONS
@@ -81,3 +81,5 @@ support returning multiple lines.
 L<File::Random>
 
 L<File::RandomLine>
+
+[1] L<https://rt.cpan.org/Ticket/Display.html?id=109384>
