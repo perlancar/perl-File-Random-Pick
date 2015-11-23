@@ -15,7 +15,13 @@ sub random_line {
 
     $num_lines //= 1;
 
-    open my($fh), "<", $path or die "Can't open $path: $!";
+    my $fh;
+    if (ref($path)) {
+        $fh = $path;
+    } else {
+        open $fh, "<", $path or die "Can't open $path: $!";
+    }
+
     if ($num_lines < 1) {
         die "Please specify a positive number of lines to pick";
     } elsif ($num_lines == 1) {
@@ -51,6 +57,9 @@ sub random_line {
  my $line  = random_line("/usr/share/dict/words");
  my @lines = random_line("/usr/share/dict/words", 3);
 
+ # also accepts a filehandle
+ my $line = random_line($fh);
+
 
 =head1 DESCRIPTION
 
@@ -58,18 +67,19 @@ This module can return random lines from a specified file.
 
 Compared to the existing L<File::Random>, this module does not return
 duplicates. I have also submitted a ticket to incorporate this functionality
-into File::Random [1].
+into File::Random [1]. It also accepts a filehandle, for convenience.
 
 
 =head1 FUNCTIONS
 
-=head2 random_line($path [ , $num_lines ]) => list
+=head2 random_line($path_or_handle [ , $num_lines ]) => list
 
-Return random lines from a specified file. Will not return duplicates (meaning,
-will not return the same line of the file twice, but might still return
-duplicates if two or more lines contain the same content). Will die on failure
-to open file. C<$num_lines> defaults to 1. If there are less than C<$num_lines>
-available in the file, will return just the available number of lines.
+Return random lines from a specified file (or filehandle). Will not return
+duplicates (meaning, will not return the same line of the file twice, but might
+still return duplicates if two or more lines contain the same content). Will die
+on failure to open file. C<$num_lines> defaults to 1. If there are less than
+C<$num_lines> available in the file, will return just the available number of
+lines.
 
 The algorithm used is from L<perlfaq> (C<perldoc -q "random line">), which scans
 the file once. The algorithm is for returning a single line and is modified to
